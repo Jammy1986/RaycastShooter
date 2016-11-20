@@ -22,7 +22,7 @@ public class Bullet : NetworkBehaviour
     private void Start()
     {
         _startTime = Time.time;
-        Debug.Log("New bullet");
+        //Debug.Log("New bullet " + Time.fixedTime);
     }
 
     private void Update()
@@ -33,7 +33,7 @@ public class Bullet : NetworkBehaviour
         }
         if (_startTime + _maxLifeTime < Time.time)
         {
-            Debug.Log("Bullet life time ended");
+            //Debug.Log("Bullet life time ended " + Time.fixedTime);
             Destroy(gameObject);
         }
     }
@@ -44,8 +44,14 @@ public class Bullet : NetworkBehaviour
         {
             return;
         }
+        if (GetComponent<Rigidbody>().IsSleeping())
+        {
+            //Debug.Log("Has paused " + Time.fixedTime);
+            return;
+        }
         if (_willPassPlane)
         {
+            //Debug.Log("Sleeping rigidbody current position: " + transform.position + ". " + Time.fixedTime);
             GetComponent<Rigidbody>().Sleep();
             return;
         }
@@ -55,15 +61,18 @@ public class Bullet : NetworkBehaviour
         {
             return;
         }
-        var distanceToPoint = _destination.GetDistanceToPoint(transform.position);
+        float distanceToPoint;
+        _destination.Raycast(new Ray(transform.position, rigidbody.velocity), out distanceToPoint);
+        //var oldVelocity = rigidbody.velocity;
         rigidbody.velocity = distanceToPoint * rigidbody.velocity.normalized / Time.fixedDeltaTime;
+        //var newProjectedPosition = transform.position + Time.fixedDeltaTime * rigidbody.velocity;
         _willPassPlane = true;
-        Debug.Log("Will pass plane");
+        //Debug.Log("Will pass plane. Distance: " + distanceToPoint + ". Current position: " + transform.position + ". Projected position: " + projectedPosition + ". New position: " + newProjectedPosition + ". Old velocitty: " + oldVelocity + ". Velocity: " + rigidbody.velocity + ". " + Time.fixedTime);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Trigger enter");
+        //Debug.Log("Trigger enter " + other.transform.tag + " " + Time.fixedTime);
 
         if (!isServer)
         {
