@@ -9,7 +9,7 @@ public class PlayerControls : NetworkBehaviour
     [SerializeField] private GameObject _shotEmitter;
     [SerializeField] private GameObject _bulletPrefab;
 
-    [SyncVar(hook = "UpdateBulletSpeedText")] private int _bulletSpeed = 100;
+    [SyncVar(hook = "UpdateBulletSpeedText")] private int _bulletSpeed = 1000;
     private Text _bulletSpeedText;
     private void UpdateBulletSpeedText(int bulletSpeed)
     {
@@ -66,13 +66,6 @@ public class PlayerControls : NetworkBehaviour
         if (!isLocalPlayer)
             return;
 
-        var x = Input.GetAxis("Horizontal") * 0.1f;
-        var z = Input.GetAxis("Vertical") * 0.1f;
-
-        transform.Translate(x, 0, z);
-
-        transform.Rotate(0, Input.GetAxis("Mouse X"), 0);
-
         FindObjectOfType<Camera>().transform.position = transform.position - (Quaternion.Euler(0, transform.eulerAngles.y, 0) * _offset);
 
         FindObjectOfType<Camera>().transform.LookAt(transform);
@@ -102,6 +95,13 @@ public class PlayerControls : NetworkBehaviour
         {
             CmdReturnToLobby();
         }
+    }
+
+    private void FixedUpdate()
+    {
+        var rigidbody = GetComponent<Rigidbody>();
+        rigidbody.AddRelativeForce(new Vector3(Input.GetAxis("Horizontal") * 100, 0, Input.GetAxis("Vertical") * 100));
+        rigidbody.rotation = Quaternion.Euler(rigidbody.rotation.eulerAngles + new Vector3(0f, 5 * Input.GetAxis("Mouse X"), 0f));
     }
 
     [Command]
