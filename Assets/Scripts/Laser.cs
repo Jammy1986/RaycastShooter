@@ -47,7 +47,7 @@ public class Laser : NetworkBehaviour
         }
     }
 
-    public void Setup(Vector3 position, Vector3 direction)
+    public void Setup(Vector3 position, Vector3 direction, Vector3 velocityForOffset)
     {
         var hits = Physics.RaycastAll(new Ray(position, direction));
         var destination = new RaycastHit();
@@ -74,7 +74,10 @@ public class Laser : NetworkBehaviour
             break;
         }
 
-        _origin = position;
+        var projection = Vector3.Project(velocityForOffset * _maxLifeTime * 1.5f, direction);
+        var imaginaryDestination = direction * 10000;
+        _origin = Vector3.Distance(position, imaginaryDestination) < Vector3.Distance(position + projection, imaginaryDestination) ? position : position + projection;
+
         if (_hasDestination)
         {
             _destination = destination.point;

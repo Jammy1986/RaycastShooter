@@ -58,7 +58,7 @@ public class PlayerControls : NetworkBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            CmdFire();
+            CmdFire(GetComponent<Rigidbody>().velocity);
         }
 
         if (transform.position.y < -5)
@@ -69,16 +69,21 @@ public class PlayerControls : NetworkBehaviour
 
     private void FixedUpdate()
     {
+        if (!isLocalPlayer)
+        {
+            return;
+        }
+
         var rigidbody = GetComponent<Rigidbody>();
         rigidbody.AddRelativeForce(new Vector3(Input.GetAxis("Horizontal") * 100, 0, Input.GetAxis("Vertical") * 100));
         rigidbody.rotation = Quaternion.Euler(rigidbody.rotation.eulerAngles + new Vector3(0f, 5 * Input.GetAxis("Mouse X"), 0f));
     }
 
     [Command]
-    private void CmdFire()
+    private void CmdFire(Vector3 velocityOffsetForShot)
     {
         var laserInstance = Instantiate(_laserPrefab);
-        laserInstance.GetComponent<Laser>().Setup(_shotEmitter.transform.position, _shotEmitter.transform.forward);
+        laserInstance.GetComponent<Laser>().Setup(_shotEmitter.transform.position, _shotEmitter.transform.forward, velocityOffsetForShot);
         NetworkServer.Spawn(laserInstance);
     }
 
