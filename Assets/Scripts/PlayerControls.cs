@@ -7,7 +7,7 @@ public class PlayerControls : NetworkBehaviour
 {
     [SerializeField] private Vector3 _offset;
     [SerializeField] private GameObject _shotEmitter;
-    [SerializeField] private GameObject _bulletPrefab;
+    [SerializeField] private GameObject _laserPrefab;
     
     [SyncVar(hook = "UpdateHitCounterText")] private int _hitCounter;
     private Text _hitCounterText;
@@ -77,9 +77,9 @@ public class PlayerControls : NetworkBehaviour
     [Command]
     private void CmdFire()
     {
-        var bulletInstance = Instantiate(_bulletPrefab);
-        bulletInstance.GetComponent<Bullet>().Setup(_shotEmitter.transform.position, _shotEmitter.transform.forward);
-        NetworkServer.Spawn(bulletInstance);
+        var laserInstance = Instantiate(_laserPrefab);
+        laserInstance.GetComponent<Laser>().Setup(_shotEmitter.transform.position, _shotEmitter.transform.forward);
+        NetworkServer.Spawn(laserInstance);
     }
 
     [Command]

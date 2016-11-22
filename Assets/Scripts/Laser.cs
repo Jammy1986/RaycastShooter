@@ -1,18 +1,21 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
 
-public class Bullet : NetworkBehaviour
+public class Laser : NetworkBehaviour
 {
     [SerializeField] private float _maxBulletDistance;
     [SerializeField] private float _maxLifeTime;
     [SerializeField] private Color _startColour;
     [SerializeField] private Color _endColour;
+
+    [SerializeField] private GameObject _laserSplashPrefab;
+    private LineRenderer _lineRenderer;
+
     private float _startTime;
 
+    [SyncVar] private bool _hasDestination;
     [SyncVar] private Vector3 _origin;
     [SyncVar] private Vector3 _destination;
-
-    private LineRenderer _lineRenderer;
 
     private void Awake()
     {
@@ -23,6 +26,12 @@ public class Bullet : NetworkBehaviour
     {
         _startTime = Time.time;
         _lineRenderer.SetPositions(new[] { _origin, _destination });
+
+        if (_hasDestination)
+        {
+            var laserSplash = (GameObject) Instantiate(_laserSplashPrefab, _destination, Quaternion.LookRotation(_origin - _destination));
+            laserSplash.transform.parent = transform;
+        }
     }
 
     private void Update()
@@ -42,10 +51,9 @@ public class Bullet : NetworkBehaviour
     {
         var hits = Physics.RaycastAll(new Ray(position, direction));
         var destination = new RaycastHit();
-        var hasDestination = false;
         foreach (var raycastHit in hits)
         {
-            if (raycastHit.transform.tag.Equals("Bullet"))
+            if (raycastHit.transform.tag.Equals("Laser"))
             {
                 continue;
             }
@@ -55,7 +63,7 @@ public class Bullet : NetworkBehaviour
             }
 
             destination = raycastHit;
-            hasDestination = true;
+            _hasDestination = true;
 
             if (raycastHit.transform.tag.Equals("Player"))
             {
@@ -67,7 +75,7 @@ public class Bullet : NetworkBehaviour
         }
 
         _origin = position;
-        if (hasDestination)
+        if (_hasDestination)
         {
             _destination = destination.point;
         }

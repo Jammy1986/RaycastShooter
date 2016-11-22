@@ -183,7 +183,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _offset: {x: 0, y: -1, z: 5}
   _shotEmitter: {fileID: 1000014249878330}
-  _bulletPrefab: {fileID: 1000013033100832, guid: 62255be7b0c8c794590a120acb802cae,
+  _laserPrefab: {fileID: 1000013033100832, guid: 62255be7b0c8c794590a120acb802cae,
     type: 2}
 --- !u!114 &114000010834374364
 MonoBehaviour:

@@ -24,7 +24,7 @@ GameObject:
   - 114: {fileID: 114000014211912106}
   - 120: {fileID: 120000010751887284}
   m_Layer: 0
-  m_Name: Bullet
+  m_Name: Laser
   m_TagString: Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -107,9 +107,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxBulletDistance: 400
-  _maxLifeTime: 0.2
+  _maxLifeTime: 0.1
   _startColour: {r: 0.2392157, g: 0.9490197, b: 0.18039216, a: 1}
   _endColour: {r: 0.11464691, g: 0.44117647, b: 0.08758651, a: 0}
+  _laserSplashPrefab: {fileID: 1000010597333606, guid: 082c44a0d72680841bb1ea6b75bd7194,
+    type: 2}
 --- !u!120 &120000010751887284
 LineRenderer:
   m_ObjectHideFlags: 1
