@@ -181,7 +181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd56d412742e1464aa83344bfe3692b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _offset: {x: 0, y: -2, z: 4}
+  _offset: {x: 0, y: -1, z: 5}
   _shotEmitter: {fileID: 1000014249878330}
   _bulletPrefab: {fileID: 1000013033100832, guid: 62255be7b0c8c794590a120acb802cae,
     type: 2}
@@ -196,7 +196,7 @@ MonoBehaviour:
   m_Script: {fileID: -1768714887, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TransformSyncMode: 3
+  m_TransformSyncMode: 1
   m_SendInterval: 0.04761905
   m_SyncRotationAxis: 7
   m_RotationSyncCompression: 0

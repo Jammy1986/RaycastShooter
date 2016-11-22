@@ -19,12 +19,10 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 4000010199648054}
-  - 96: {fileID: 96000010641316004}
   - 114: {fileID: 114000011807115730}
   - 114: {fileID: 114000014087447904}
   - 114: {fileID: 114000014211912106}
-  - 54: {fileID: 54000013524122732}
-  - 135: {fileID: 135000011947443352}
+  - 120: {fileID: 120000010751887284}
   m_Layer: 0
   m_Name: Bullet
   m_TagString: Bullet
@@ -45,71 +43,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!54 &54000013524122732
-Rigidbody:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000013033100832}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 1
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 112
-  m_CollisionDetection: 0
---- !u!96 &96000010641316004
-TrailRenderer:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000013033100832}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 0
-  m_ReflectionProbeUsage: 0
-  m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_SubsetIndices: 
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_SelectedWireframeHidden: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_Time: 0.4
-  m_StartWidth: 0.1
-  m_EndWidth: 0.1
-  m_Colors:
-    m_Color[0]:
-      serializedVersion: 2
-      rgba: 4280310300
-    m_Color[1]:
-      serializedVersion: 2
-      rgba: 4280913974
-    m_Color[2]:
-      serializedVersion: 2
-      rgba: 4283820385
-    m_Color[3]:
-      serializedVersion: 2
-      rgba: 4290314170
-    m_Color[4]:
-      serializedVersion: 2
-      rgba: 8295041
-  m_MinVertexDistance: 0.1
-  m_Autodestruct: 0
 --- !u!114 &114000011807115730
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -153,7 +86,7 @@ MonoBehaviour:
   m_Script: {fileID: -1768714887, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TransformSyncMode: 3
+  m_TransformSyncMode: 1
   m_SendInterval: 0
   m_SyncRotationAxis: 7
   m_RotationSyncCompression: 0
@@ -173,16 +106,47 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 395dc9b4531bf0c46816d3c7ecc87e02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxLifeTime: 1
---- !u!135 &135000011947443352
-SphereCollider:
+  _maxBulletDistance: 400
+  _maxLifeTime: 0.3
+--- !u!120 &120000010751887284
+LineRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013033100832}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.3
-  m_Center: {x: 0, y: 0, z: 0}
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_SelectedWireframeHidden: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_Positions:
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 1}
+  m_Parameters:
+    startWidth: 0.1
+    endWidth: 0.1
+    m_StartColor:
+      serializedVersion: 2
+      rgba: 4281266749
+    m_EndColor:
+      serializedVersion: 2
+      rgba: 4281266749
+  m_UseWorldSpace: 1

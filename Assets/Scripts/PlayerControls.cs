@@ -8,19 +8,7 @@ public class PlayerControls : NetworkBehaviour
     [SerializeField] private Vector3 _offset;
     [SerializeField] private GameObject _shotEmitter;
     [SerializeField] private GameObject _bulletPrefab;
-
-    [SyncVar(hook = "UpdateBulletSpeedText")] private int _bulletSpeed = 1000;
-    private Text _bulletSpeedText;
-    private void UpdateBulletSpeedText(int bulletSpeed)
-    {
-        if (!isLocalPlayer)
-        {
-            return;
-        }
-        _bulletSpeed = bulletSpeed;
-        _bulletSpeedText.text = "Bullet speed: " + bulletSpeed;
-    }
-
+    
     [SyncVar(hook = "UpdateHitCounterText")] private int _hitCounter;
     private Text _hitCounterText;
     private void UpdateHitCounterText(int hitCounter)
@@ -53,9 +41,7 @@ public class PlayerControls : NetworkBehaviour
         {
             return;
         }
-         _bulletSpeedText = GameObject.Find("BulletSpeedText").GetComponent<Text>();
-        UpdateBulletSpeedText(_bulletSpeed);
-         _hitCounterText = GameObject.Find("HitCounterText").GetComponent<Text>();
+        _hitCounterText = GameObject.Find("HitCounterText").GetComponent<Text>();
         UpdateHitCounterText(_hitCounter);
          _enemyHitCounterText = GameObject.Find("EnemyHitCounterText").GetComponent<Text>();
         UpdateEnemyHitCounterText(_enemyHitCounter);
@@ -70,22 +56,6 @@ public class PlayerControls : NetworkBehaviour
 
         FindObjectOfType<Camera>().transform.LookAt(transform);
 
-        if (Input.GetKeyDown(KeyCode.KeypadPlus))
-        {
-            CmdIncreaseBulletSpeed(_bulletSpeed + 1);
-        }
-        else if (Input.GetKeyDown(KeyCode.KeypadMinus))
-        {
-            CmdIncreaseBulletSpeed(_bulletSpeed - 1);
-        }
-        else if (Input.GetKeyDown(KeyCode.KeypadMultiply))
-        {
-            CmdIncreaseBulletSpeed(_bulletSpeed * 2);
-        }
-        else if (Input.GetKeyDown(KeyCode.KeypadDivide))
-        {
-            CmdIncreaseBulletSpeed(_bulletSpeed / 2);
-        }
         if (Input.GetKeyDown(KeyCode.Space))
         {
             CmdFire();
@@ -105,35 +75,10 @@ public class PlayerControls : NetworkBehaviour
     }
 
     [Command]
-    private void CmdIncreaseBulletSpeed(int newBulletSpeed)
-    {
-        _bulletSpeed = newBulletSpeed;
-    }
-
-    [Command]
     private void CmdFire()
     {
-        var hits = Physics.RaycastAll(new Ray(_shotEmitter.transform.position, _shotEmitter.transform.forward));
-        var destination = new RaycastHit();
-        var hitSomething = false;
-        foreach (var raycastHit in hits)
-        {
-            if (raycastHit.transform.tag.Equals("Bullet"))
-            {
-                continue;
-            }
-            if (raycastHit.transform.Equals(transform))
-            {
-                continue;
-            }
-            destination = raycastHit;
-            hitSomething = true;
-            break;
-        }
         var bulletInstance = Instantiate(_bulletPrefab);
-        bulletInstance.transform.position = _shotEmitter.transform.position;
-        bulletInstance.GetComponent<Rigidbody>().velocity = transform.forward * _bulletSpeed;
-        bulletInstance.GetComponent<Bullet>().SetDestination(hitSomething, destination);
+        bulletInstance.GetComponent<Bullet>().Setup(_shotEmitter.transform.position, _shotEmitter.transform.forward);
         NetworkServer.Spawn(bulletInstance);
     }
 
