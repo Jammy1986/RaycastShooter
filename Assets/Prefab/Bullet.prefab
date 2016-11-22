@@ -107,7 +107,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxBulletDistance: 400
-  _maxLifeTime: 0.3
+  _maxLifeTime: 0.2
+  _startColour: {r: 0.2392157, g: 0.9490197, b: 0.18039216, a: 1}
+  _endColour: {r: 0.11464691, g: 0.44117647, b: 0.08758651, a: 0}
 --- !u!120 &120000010751887284
 LineRenderer:
   m_ObjectHideFlags: 1

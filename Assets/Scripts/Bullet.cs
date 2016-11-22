@@ -5,6 +5,8 @@ public class Bullet : NetworkBehaviour
 {
     [SerializeField] private float _maxBulletDistance;
     [SerializeField] private float _maxLifeTime;
+    [SerializeField] private Color _startColour;
+    [SerializeField] private Color _endColour;
     private float _startTime;
 
     [SyncVar] private Vector3 _origin;
@@ -25,6 +27,7 @@ public class Bullet : NetworkBehaviour
 
     private void Update()
     {
+        _lineRenderer.SetColors(Color.Lerp(_startColour, _endColour, (Time.time - _startTime) / _maxLifeTime), Color.Lerp(_startColour, _endColour, (Time.time - _startTime) / _maxLifeTime));
         if (!isServer)
         {
             return;
