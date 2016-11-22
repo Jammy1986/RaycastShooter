@@ -1,4 +1,5 @@
-﻿using Prototype.NetworkLobby;
+﻿using System;
+using Prototype.NetworkLobby;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -8,6 +9,7 @@ public class PlayerControls : NetworkBehaviour
     [SerializeField] private Vector3 _offset;
     [SerializeField] private GameObject _shotEmitter;
     [SerializeField] private GameObject _laserPrefab;
+    private bool _joystickFired;
     
     [SyncVar(hook = "UpdateHitCounterText")] private int _hitCounter;
     private Text _hitCounterText;
@@ -56,9 +58,15 @@ public class PlayerControls : NetworkBehaviour
 
         FindObjectOfType<Camera>().transform.LookAt(transform);
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Math.Abs(Input.GetAxis("Fire1")) < 0.0001f)
+        {
+            _joystickFired = false;
+        }
+
+        if (Input.GetButtonDown("Fire1") || (!_joystickFired && Input.GetAxis("Fire1") > 0))
         {
             CmdFire(GetComponent<Rigidbody>().velocity);
+            _joystickFired = true;
         }
 
         if (transform.position.y < -5)
@@ -75,7 +83,7 @@ public class PlayerControls : NetworkBehaviour
         }
 
         var rigidbody = GetComponent<Rigidbody>();
-        rigidbody.AddRelativeForce(new Vector3(Input.GetAxis("Horizontal") * 100, 0, Input.GetAxis("Vertical") * 100));
+        rigidbody.AddRelativeForce(new Vector3(Input.GetAxis("Horizontal") * 500, 0, Input.GetAxis("Vertical") * 500));
         rigidbody.rotation = Quaternion.Euler(rigidbody.rotation.eulerAngles + new Vector3(0f, 5 * Input.GetAxis("Mouse X"), 0f));
     }
 
